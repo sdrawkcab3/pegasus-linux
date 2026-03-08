@@ -1,12 +1,15 @@
-# Pegasus
+## Pegasus
 
-A .NET Core 2.2 application with PostgreSQL database integration.
+
+### Information
+A slapped together emulator for Virindi Integrator 2. This code was an attempt at creating an emulator for Virindi Integrator 2. Various people have asked for the source code since hosting ceased, so here it is.
 
 ## Prerequisites
 
 - Docker
 - Docker Compose
 - Git
+- PostgreSQL (if running without Docker)
 
 ## Project Structure
 
@@ -21,13 +24,28 @@ Pegasus/
 └── README.md
 ```
 
-## Database Schema
+## Database Setup
 
-The application uses PostgreSQL with the following main entities:
-- Account: User account information
-- Friend: Friend relationships between accounts
-- Dungeon: Dungeon information with landblock IDs
-- DungeonTile: Individual tiles within dungeons
+### Option 1: Manual PostgreSQL Setup
+```sql
+$ PGPASSWORD=adminpassword psql -U postgres -h hostname -p 5432 -d template1 --set=sslmode=require
+psql 10.7
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+
+defaultdb=> create database pegasus;
+CREATE DATABASE
+defaultdb=> create user pegasus with encrypted password 'somelongasspassword';
+CREATE ROLE
+defaultdb=> grant all privileges on database pegasus to pegasus;
+GRANT
+```
+
+### Option 2: Docker Setup
+
+The database is automatically initialized when using Docker Compose with the following configuration:
+- Database: pegasus
+- Username: pegasus
+- Password: somelongasspassword (configurable in docker-compose.yml)
 
 ## Configuration
 
@@ -47,9 +65,11 @@ PEGASUS_DB_PASSWORD=somelongasspassword
 
 ## Running the Application
 
+### Using Docker (Recommended)
+
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/Pegasus.git
+git clone https://github.com/davesienkowski/Pegasus-linux.git
 cd Pegasus
 ```
 
@@ -81,9 +101,9 @@ docker-compose logs -f pegasus-db
 docker-compose down
 ```
 
-## Development
+### Development
 
-### Building
+#### Building
 ```bash
 # Clean and rebuild
 docker-compose down
@@ -92,7 +112,7 @@ docker-compose build --no-cache
 docker-compose up -d
 ```
 
-### Database
+#### Database Management
 - The database is automatically initialized using `init-db-script.sql`
 - Data persists between restarts in the `postgres_data` volume
 - To reset the database:
