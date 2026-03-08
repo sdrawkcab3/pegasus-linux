@@ -6,13 +6,11 @@ services:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: pegasus
-      POSTGRES_PASSWORD: somelongasspassword
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: pegasus
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db-script.sql:/docker-entrypoint-initdb.d/init-db-script.sql
-    ports:
-      - "5432:5432"
     networks:
       - pegasus-network
     healthcheck:
@@ -45,7 +43,7 @@ services:
       - PEGASUS_DB_PORT=5432
       - PEGASUS_DB_DATABASE=pegasus
       - PEGASUS_DB_USERNAME=pegasus
-      - PEGASUS_DB_PASSWORD=somelongasspassword
+      - PEGASUS_DB_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - pegasus-network
     restart: unless-stopped
@@ -59,6 +57,17 @@ services:
         limits:
           memory: 512M
           cpus: '0.5'
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - pegasus
+    networks:
+      - pegasus-network
 
 networks:
   pegasus-network:
