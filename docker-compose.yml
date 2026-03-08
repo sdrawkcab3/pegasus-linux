@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: pegasus-db
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: pegasus
+      POSTGRES_PASSWORD: somelongasspassword
+      POSTGRES_DB: pegasus
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db-script.sql:/docker-entrypoint-initdb.d/init-db-script.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - pegasus-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pegasus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1'
+
+  pegasus:
+    container_name: pegasus-app
+    build:
+      context: ./Pegasus
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - PEGASUS_DB_HOSTNAME=postgres
+      - PEGASUS_DB_PORT=5432
+      - PEGASUS_DB_DATABASE=pegasus
+      - PEGASUS_DB_USERNAME=pegasus
+      - PEGASUS_DB_PASSWORD=somelongasspassword
+    networks:
+      - pegasus-network
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+
+networks:
+  pegasus-network:
+    driver: bridge
+    name: pegasus-network
+
+volumes:
+  postgres_data:
+    name: pegasus-postgres-data
