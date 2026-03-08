@@ -21,7 +21,7 @@ namespace Pegasus.DungeonGenerator
 
         private static void Main()
         {
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+            Directory.SetCurrentDirectory(AppContext.BaseDirectory);
 
             Console.Title = Title;
 

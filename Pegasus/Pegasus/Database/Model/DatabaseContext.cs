@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Pegasus.Configuration;
 
 namespace Pegasus.Database.Model
@@ -46,7 +45,7 @@ namespace Pegasus.Database.Model
                 entity.ToTable("account");
 
                 entity.Property(e => e.Id).HasColumnName("id")
-                    .HasColumnType("serial")
+                    .UseIdentityColumn()
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CreateIp)
@@ -116,10 +115,10 @@ namespace Pegasus.Database.Model
                 entity.ToTable("dungeon_tile");
 
                 entity.HasIndex(e => e.LandBlockId)
-                    .HasName("fk_landblockid_landblockid_dungeon");
+                    .HasDatabaseName("fk_landblockid_landblockid_dungeon");
 
                 entity.Property(e => e.Id).HasColumnName("id")
-                    .HasColumnType("serial")
+                    .UseIdentityColumn()
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.LandBlockId)
@@ -155,7 +154,7 @@ namespace Pegasus.Database.Model
                 entity.ToTable("friend");
 
                 entity.HasIndex(e => e.Friend1)
-                    .HasName("fk_friend_friend_id");
+                    .HasDatabaseName("fk_friend_friend_id");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")

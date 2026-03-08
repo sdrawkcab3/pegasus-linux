@@ -1,5 +1,5 @@
 # Use .NET Core 2.2 SDK as base image for building
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 WORKDIR /app
 
 # Copy solution and project files first
@@ -18,7 +18,7 @@ RUN mkdir -p /app/out && \
     dotnet publish "./Pegasus/Pegasus.csproj" -c Release -o /app/out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+FROM mcr.microsoft.com/dotnet/runtime:9.0
 WORKDIR /app
 
 # Copy the published output

@@ -27,7 +27,7 @@ namespace Pegasus
 
         private static void Main()
         {
-            string location = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string location = AppContext.BaseDirectory;
             LogManager.Configuration = new XmlLoggingConfiguration(Path.Combine(location, "nlog.config"));
 
             Directory.SetCurrentDirectory(location);
