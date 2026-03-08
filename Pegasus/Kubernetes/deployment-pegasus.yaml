@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pegasus
+spec:
+  selector:
+    matchLabels:
+      run: pegasus
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: pegasus
+    spec:
+      containers:
+      - name: pegasus
+        image: rlambert/pegasus
+        ports:
+        - containerPort: 13124
+        env:
+        - name: PEGASUS_DB_HOSTNAME
+          value: 
+        - name: PEGASUS_DB_PORT
+          value: 
+        - name: PEGASUS_DB_USERNAME
+          value: 
+        - name: PEGASUS_DB_PASSWORD
+          value: 
+        - name: PEGASUS_DB_DATABASE
+          value: 
+        - name: PEGASUS_DB_SSL_MODE
+          value: "Require"
+        - name: PEGASUS_DB_TRUST_SERVER_CERT
+          value: true

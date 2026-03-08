@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pegasus
+  labels:
+    run: pegasus
+spec:
+  ports:
+  - port: 13124
+    protocol: TCP
+  selector:
+    run: pegasus

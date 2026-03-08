@@ -1,0 +1,25 @@
+{
+    "Network":{
+        "Host":"0.0.0.0",
+        "Port":13124
+    },
+    "MySql":{
+        "Host":"127.0.0.1",
+        "Port":3306,
+        "Database":"Pegasus",
+        "Username":"root",
+        "Password":""
+    },
+  "Database": {
+    "Provider": "Postgresql",
+    "ConnectionString": "Host=${POSTGRES_HOST};Port=${POSTGRES_PORT};Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+  },  
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*"
+}
