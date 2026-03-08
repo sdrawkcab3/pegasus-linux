@@ -80,11 +80,11 @@ Cloudflare Tunnel exposes the app publicly without opening any ports on your rou
 
 3. Choose **Cloudflared**, give it a name (e.g. `pegasus`), and copy the tunnel token into your `.env` as `CLOUDFLARE_TUNNEL_TOKEN`.
 
-4. Under **Public Hostnames**, add a hostname and set the service URL to:
-```
-http://pegasus:80
-```
-This uses the internal Docker network name — no host port exposure needed.
+4. Under **Public Hostnames**, add a hostname and configure the service:
+   - **Type:** `HTTP`
+   - **URL:** `pegasus:13124`
+
+   This uses the internal Docker network name — no host port exposure needed.
 
 5. Start the stack:
 ```bash

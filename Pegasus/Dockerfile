@@ -1,4 +1,4 @@
-# Use .NET Core 2.2 SDK as base image for building
+# Use .NET 9.0 SDK as base image for building
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 WORKDIR /app
 
@@ -27,11 +27,10 @@ COPY --from=build-env /app/out .
 # Copy the config file
 COPY ["Config.json", "./"]
 
-# Set environment variables
+# Set environment variables (PEGASUS_DB_PASSWORD is injected at runtime via docker-compose)
 ENV PEGASUS_DB_HOSTNAME=postgres \
     PEGASUS_DB_PORT=5432 \
     PEGASUS_DB_DATABASE=pegasus \
-    PEGASUS_DB_USERNAME=pegasus \
-    PEGASUS_DB_PASSWORD=somelongasspassword
+    PEGASUS_DB_USERNAME=pegasus
 
 ENTRYPOINT ["dotnet", "Pegasus.dll"] 
