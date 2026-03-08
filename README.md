@@ -10,42 +10,41 @@ A slapped together emulator for Virindi Integrator 2. This code was an attempt a
 - Docker Compose
 - Git
 - PostgreSQL (if running without Docker)
+- A [Cloudflare account](https://cloudflare.com) with a domain (for public access via Cloudflare Tunnel)
 
 ## Project Structure
 
 ```
-Pegasus/
-├── docker-compose.yml    # Docker compose configuration
-├── init-db-script.sql   # Database initialization script
-├── Pegasus/            
-│   ├── Dockerfile      # Docker build configuration
-│   ├── Config.json     # Application configuration
-│   └── ...            # Application source files
-└── README.md
+pegasus-linux/
+├── docker-compose.yml    # Docker Compose configuration (app, db, cloudflared)
+├── init-db-script.sql    # Database initialization script
+├── .env.example          # Template for required environment variables
+├── .env                  # Your local secrets — never commit this
+├── .gitignore
+├── README.md
+└── Pegasus/
+    ├── Dockerfile        # Docker build configuration
+    ├── Config.json       # Application configuration
+    └── ...               # Application source files
 ```
 
 ## Database Setup
 
 ### Option 1: Manual PostgreSQL Setup
-```sql
-$ PGPASSWORD=adminpassword psql -U postgres -h hostname -p 5432 -d template1 --set=sslmode=require
-psql 10.7
-SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 
-defaultdb=> create database pegasus;
-CREATE DATABASE
-defaultdb=> create user pegasus with encrypted password 'somelongasspassword';
-CREATE ROLE
-defaultdb=> grant all privileges on database pegasus to pegasus;
-GRANT
+Connect to your PostgreSQL instance and run:
+
+```sql
+CREATE DATABASE pegasus;
+CREATE USER pegasus WITH ENCRYPTED PASSWORD 'your_password_here';
+GRANT ALL PRIVILEGES ON DATABASE pegasus TO pegasus;
 ```
+
+Use the same password you set as `POSTGRES_PASSWORD` in your `.env` file.
 
 ### Option 2: Docker Setup
 
-The database is automatically initialized when using Docker Compose with the following configuration:
-- Database: pegasus
-- Username: pegasus
-- Password: somelongasspassword (configurable in docker-compose.yml)
+The database is automatically initialized when using Docker Compose. Credentials are configured via a `.env` file (see [Configuration](#configuration) below).
 
 ## Configuration
 
@@ -54,14 +53,45 @@ The database is automatically initialized when using Docker Compose with the fol
 cp Config.example.json Config.json
 ```
 
-2. Environment variables (set in docker-compose.yml):
+2. Create a `.env` file from the example and fill in your values:
+```bash
+cp .env.example .env
 ```
-PEGASUS_DB_HOSTNAME=postgres
-PEGASUS_DB_PORT=5432
-PEGASUS_DB_DATABASE=pegasus
-PEGASUS_DB_USERNAME=pegasus
-PEGASUS_DB_PASSWORD=somelongasspassword
+
+```env
+# A strong password for the PostgreSQL database
+POSTGRES_PASSWORD=your_strong_password_here
+
+# Cloudflare Tunnel token (see Public Access section below)
+CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here
 ```
+
+Never commit `.env` to git — it is listed in `.gitignore`.
+
+## Public Access via Cloudflare Tunnel
+
+Cloudflare Tunnel exposes the app publicly without opening any ports on your router or firewall.
+
+### Setup
+
+1. Create a free [Cloudflare account](https://cloudflare.com) and add your domain.
+
+2. Go to **Cloudflare Zero Trust dashboard** → Networks → Tunnels → **Create a tunnel**.
+
+3. Choose **Cloudflared**, give it a name (e.g. `pegasus`), and copy the tunnel token into your `.env` as `CLOUDFLARE_TUNNEL_TOKEN`.
+
+4. Under **Public Hostnames**, add a hostname and set the service URL to:
+```
+http://pegasus:80
+```
+This uses the internal Docker network name — no host port exposure needed.
+
+5. Start the stack:
+```bash
+docker compose up -d
+```
+
+The `cloudflared` container will connect automatically and your app will be available at your configured hostname over HTTPS.
 
 ## Running the Application
 
@@ -128,7 +158,7 @@ docker-compose down -v  # The -v flag removes volumes
    - Config.json exists and is properly formatted
 
 2. Common issues:
-   - Port 5432 already in use: Change the port mapping in docker-compose.yml
+   - Database connection issues: Ensure the `POSTGRES_PASSWORD` in `.env` matches what the app expects
    - Database connection issues: Ensure PostgreSQL container is healthy
 
 ## Contributing
