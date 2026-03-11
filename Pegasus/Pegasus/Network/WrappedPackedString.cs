@@ -12,6 +12,9 @@ namespace Pegasus.Network
         {
             WrappedPackedUInt32 length = new WrappedPackedUInt32();
             length.Read(reader);
+            const uint MaxStringLength = 4096;
+            if (length.Value > MaxStringLength)
+                throw new InvalidDataException($"String length {length.Value} exceeds maximum.");
             byte[] buffer = new byte[length.Value];
             reader.Read(buffer, 0, (int)length.Value);
 

@@ -140,7 +140,14 @@ namespace Pegasus.Network
                     // no packet on deck waiting for additional information, new data will be part of a new packet
                     if (onDeck == null)
                     {
+                        const uint MaxPacketSize = 1024 * 1024; // 1MB
                         uint size = reader.ReadUInt32();
+                        if (size > MaxPacketSize)
+                        {
+                            log.Warn($"Oversized packet ({size} bytes) from {Remote}, disconnecting.");
+                            Disconnect();
+                            return;
+                        }
                         onDeck = new FragmentedBuffer(size);
                     }
 
