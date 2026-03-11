@@ -44,7 +44,7 @@ namespace Pegasus.Network.Handler
         {
             foreach (uint cellId in packet.CellIds)
             {
-                DungeonInfo dungeonInfo = DungeonTileManager.GetDungeonInfo((short)cellId);
+                DungeonInfo dungeonInfo = DungeonTileManager.GetDungeonInfo((int)cellId);
                 if (dungeonInfo == null)
                     continue;
 
@@ -57,7 +57,7 @@ namespace Pegasus.Network.Handler
                         Y           = dungeonTileInfo.Origin.Y,
                         Z           = dungeonTileInfo.Origin.Z,
                         TileId      = dungeonTileInfo.TileId,
-                        LandBlockId = dungeonTileInfo.LandBlockId,
+                        LandBlockId = (ushort)dungeonTileInfo.LandBlockId,
                         ushort_2    = 0,
                         byte_0      = 1
                     });

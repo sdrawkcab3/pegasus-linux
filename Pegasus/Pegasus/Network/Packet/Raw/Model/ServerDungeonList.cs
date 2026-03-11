@@ -9,12 +9,12 @@ namespace Pegasus.Network.Packet.Raw.Model
     {
         public class Dungeon
         {
-            public short LandBlockId { get; }
+            public ushort LandBlockId { get; }
             public string Name { get; }
 
             public Dungeon(DungeonInfo dungeonInfo)
             {
-                LandBlockId = dungeonInfo.LandBlockId;
+                LandBlockId = (ushort)dungeonInfo.LandBlockId;
                 Name        = dungeonInfo.Name;
             }
         }

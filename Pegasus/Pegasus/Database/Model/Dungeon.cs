@@ -13,7 +13,7 @@ namespace Pegasus.Database.Model
         }
 
         [Column("landblockid")]
-        public short LandBlockId { get; set; }
+        public int LandBlockId { get; set; }
 
         [Column("name")]
         public string Name { get; set; }

@@ -16,7 +16,7 @@ namespace Pegasus.Network.Packet.Raw.Model
             public float float_5 { get; set; }
             public float float_6 { get; set; }
             public short TileId { get; set; }
-            public short LandBlockId { get; set; }
+            public ushort LandBlockId { get; set; }
             public short ushort_2 { get; set; }
             public byte byte_0 { get; set; }
 
