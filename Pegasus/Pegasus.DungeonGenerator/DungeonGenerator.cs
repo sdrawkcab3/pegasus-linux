@@ -37,12 +37,11 @@ namespace Pegasus.DungeonGenerator
         private static void GenerateLandBlockTiles(CLandBlockInfo landBlockInfo)
         {
             var sw = new StringWriter();
-            sw.WriteLine($"INSERT INTO `dungeon` (`landBlockId`, `name`) VALUES ({landBlockInfo.LandBlockId}, 'Dungeon{landBlockInfo.LandBlockId:X4}');");
-            sw.WriteLine("INSERT INTO `dungeon_tile` (`landBlockId`, `tileId`, `x`, `y`, `z`) VALUES");
+            sw.WriteLine($"INSERT INTO dungeon (landBlockId, name) VALUES ({landBlockInfo.LandBlockId}, 'Dungeon{landBlockInfo.LandBlockId:X4}');");
+            sw.WriteLine("INSERT INTO dungeon_tile (landBlockId, tileId, x, y, z) VALUES");
 
-            // 65 is just a place holder, need to match the cell environment with the 2D counterpart
             List<string> tiles = landBlockInfo.Cells
-                .Select(c => $"({landBlockInfo.LandBlockId}, 65, {c.Position.Origin.X}, {c.Position.Origin.Y}, {c.Position.Origin.Z})")
+                .Select(c => $"({landBlockInfo.LandBlockId}, {c.EnvironmentId}, {c.Position.Origin.X}, {c.Position.Origin.Y}, {c.Position.Origin.Z})")
                 .Distinct()
                 .ToList();
 

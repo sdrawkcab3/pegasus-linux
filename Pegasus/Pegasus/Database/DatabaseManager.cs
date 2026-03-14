@@ -28,6 +28,7 @@ namespace Pegasus.Database
                     Username   = username,
                     Password   = BCryptProvider.HashPassword(password),
                     CreateIp   = ip.ToString(),
+                    LastIp     = ip.ToString(),
                     Privileges = (short)privileges
                 });
 

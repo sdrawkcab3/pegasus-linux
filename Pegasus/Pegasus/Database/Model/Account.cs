@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pegasus.Database.Model
 {
+    [Table("account")]
     public partial class Account
     {
         public Account()
@@ -22,10 +23,12 @@ namespace Pegasus.Database.Model
         [Column("createip")]
         public string CreateIp { get; set; }
         [Column("createtime")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreateTime { get; set; }
         [Column("lastip")]
         public string LastIp { get; set; }
         [Column("lasttime")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime LastTime { get; set; }
 
         public virtual Friend FriendIdNavigation { get; set; }

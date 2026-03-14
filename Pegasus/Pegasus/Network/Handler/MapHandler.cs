@@ -56,7 +56,7 @@ namespace Pegasus.Network.Handler
                         X           = dungeonTileInfo.Origin.X,
                         Y           = dungeonTileInfo.Origin.Y,
                         Z           = dungeonTileInfo.Origin.Z,
-                        TileId      = dungeonTileInfo.TileId,
+                        TileId      = (short)dungeonTileInfo.TileId,
                         LandBlockId = (ushort)dungeonTileInfo.LandBlockId,
                         ushort_2    = 0,
                         byte_0      = 1

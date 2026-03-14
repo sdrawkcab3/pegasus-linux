@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pegasus.Database.Model
 {
+    [Table("friend")]
     public partial class Friend
     {
         [Column("id")]

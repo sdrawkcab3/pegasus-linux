@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pegasus.Database.Model
 {
+    [Table("dungeon_tile")]
     public partial class DungeonTile
     {
         [Column("id")]
@@ -11,7 +12,7 @@ namespace Pegasus.Database.Model
         [Column("landblockid")]
         public int LandBlockId { get; set; }
         [Column("tileid")]
-        public short TileId { get; set; }
+        public int TileId { get; set; }
         [Column("x")]
         public float X { get; set; }
         [Column("y")]
