@@ -49,16 +49,23 @@ namespace Pegasus.Map
         /// </summary>
         private static void BroadcastUpdateToFriends(Session session, IWritable message, UpdateParameters parameters)
         {
-            Func<CharacterObject, bool> isFriend = c => session.FriendManager.IsFriend(c);
+            Func<CharacterObject, bool> canReceiveCommand = c =>
+            {
+                if (session.FriendManager.IsFriend(c))
+                    return true;
+                Session recipientSession = NetworkManager.FindSessionByCharacter(c);
+                return recipientSession?.Account != null
+                    && string.Equals(recipientSession.Account.Username, session.Account.Username, StringComparison.OrdinalIgnoreCase);
+            };
 
             if (!string.IsNullOrEmpty(parameters.Fellowship))
                 session.Fellowships.SingleOrDefault(f => f.Info.Name == parameters.Fellowship)
-                    ?.BroadcastMessage(message, isFriend);
+                    ?.BroadcastMessage(message, canReceiveCommand);
             else if (parameters.Sequence != 0u)
                 session.Fellowships.ForEach(f => f.BroadcastMessage(message,
-                    c => c.Sequence == parameters.Sequence && session.FriendManager.IsFriend(c)));
+                    c => c.Sequence == parameters.Sequence && canReceiveCommand(c)));
             else
-                session.Fellowships.ForEach(f => f.BroadcastMessage(message, isFriend));
+                session.Fellowships.ForEach(f => f.BroadcastMessage(message, canReceiveCommand));
         }
 
         private static IWritable BuildUpdate(IWritable update, uint sequence = 0u, UpdateFlag updateFlags = UpdateFlag.None)
