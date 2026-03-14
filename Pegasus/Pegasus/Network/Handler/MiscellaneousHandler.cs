@@ -9,6 +9,8 @@ namespace Pegasus.Network.Handler
         [RawMessageHandler(ClientRawOpcode.CompList)]
         public static void HandleCompList(Session session, ClientCompList compList)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
         }
     }
 }

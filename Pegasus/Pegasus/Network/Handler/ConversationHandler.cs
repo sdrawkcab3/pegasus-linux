@@ -8,6 +8,9 @@ namespace Pegasus.Network.Handler
         [ObjectPacketHandler(ObjectOpcode.Conversation)]
         public static void HandleConversation(Session session, NetworkObject networkObject)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             NetworkObjectField.ReadIntField(networkObject.GetField(0));
             string recipient = NetworkObjectField.ReadStringField(networkObject.GetField(1));
             string message   = NetworkObjectField.ReadStringField(networkObject.GetField(2));

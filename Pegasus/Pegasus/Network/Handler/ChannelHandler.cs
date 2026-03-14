@@ -8,6 +8,9 @@ namespace Pegasus.Network.Handler
         [ObjectPacketHandler(ObjectOpcode.Channel)]
         public static void HandleChannel(Session session, NetworkObject networkObject)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             string channelName = NetworkObjectField.ReadStringField(networkObject.GetField(1));
             if (string.IsNullOrWhiteSpace(channelName))
                 return;

@@ -11,6 +11,9 @@ namespace Pegasus.Network.Handler
         [ObjectPacketHandler(ObjectOpcode.FriendList)]
         public static void HandleFriendList(Session session, NetworkObject networkObject)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             ClientFriendAction action = (ClientFriendAction)NetworkObjectField.ReadIntField(networkObject.GetField(0));
             switch (action)
             {

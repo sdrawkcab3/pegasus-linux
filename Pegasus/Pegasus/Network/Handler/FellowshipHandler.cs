@@ -8,6 +8,9 @@ namespace Pegasus.Network.Handler
         [ObjectPacketHandler(ObjectOpcode.Fellowship)]
         public static void HandleFellowship(Session session, NetworkObject networkObject)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             FellowshipAction action = (FellowshipAction)NetworkObjectField.ReadIntField(networkObject.GetField(0));
             FellowshipObject fellowshipInfo = new FellowshipObject();
             fellowshipInfo.FromNetworkObject(networkObject.GetField(1).ReadObject());
@@ -32,6 +35,9 @@ namespace Pegasus.Network.Handler
         [ObjectPacketHandler(ObjectOpcode.const_4)]
         public static void HandleFellowshipMessage(Session session, NetworkObject networkObject)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             int test = NetworkObjectField.ReadIntField(networkObject.GetField(0));
             int tes2t = NetworkObjectField.ReadIntField(networkObject.GetField(1));
         }

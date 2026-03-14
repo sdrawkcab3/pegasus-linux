@@ -10,6 +10,9 @@ namespace Pegasus.Network.Handler
         [ObjectPacketHandler(ObjectOpcode.const_12)]
         public static void Handle0C(Session session, NetworkObject networkObject)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             int action = NetworkObjectField.ReadIntField(networkObject.GetField(0));
             switch (action)
             {
@@ -28,6 +31,9 @@ namespace Pegasus.Network.Handler
         [RawMessageHandler(ClientRawOpcode.DungeonList)]
         public static void HandleDungeonList(Session session, ClientDungeonList packet)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             var dungeonList = new ServerDungeonList
             {
                 SearchParameter = packet.SearchParameter
@@ -42,6 +48,9 @@ namespace Pegasus.Network.Handler
         [RawMessageHandler(ClientRawOpcode.DungeonTiles)]
         public static void HandleDungeonTile(Session session, ClientDungeonTiles packet)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             foreach (uint cellId in packet.CellIds)
             {
                 DungeonInfo dungeonInfo = DungeonTileManager.GetDungeonInfo((int)cellId);

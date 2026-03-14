@@ -10,18 +10,27 @@ namespace Pegasus.Network.Handler
         [RawMessageHandler(ClientRawOpcode.CharacterFellowshipUpdate)]
         public static void HandleCharacterFellowshipUpdate(Session session, ClientCharacterFellowshipUpdate packet)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             HandleUpdate(session, packet.UpdateType, packet.Payload, new UpdateParameters(packet.Fellowship));
         }
 
         [RawMessageHandler(ClientRawOpcode.CharacterSequenceUpdate)]
         public static void HandleCharacterSequenceUpdate(Session session, ClientCharacterSequenceUpdate packet)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             HandleUpdate(session, packet.UpdateType, packet.Payload, new UpdateParameters(sequence: packet.Sequence));
         }
 
         [RawMessageHandler(ClientRawOpcode.CharacterUpdate)]
         public static void HandleCharacterUpdate(Session session, ClientCharacterUpdate packet)
         {
+            if (session.State != SessionState.SignedIn)
+                return;
+
             HandleUpdate(session, packet.UpdateType, packet.Payload, new UpdateParameters());
         }
 
