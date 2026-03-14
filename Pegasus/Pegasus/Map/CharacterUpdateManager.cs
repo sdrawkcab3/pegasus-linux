@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Pegasus.Network;
 using Pegasus.Network.Packet.Raw.Model;
@@ -41,6 +42,23 @@ namespace Pegasus.Map
         private static void BroadcastUpdate(Session session, IWritable message)
         {
             session.Fellowships.ForEach(f => f.BroadcastMessage(message));
+        }
+
+        /// <summary>
+        /// Broadcast <see cref="IWritable"/> only to fellowship members who are friends of the sender.
+        /// </summary>
+        private static void BroadcastUpdateToFriends(Session session, IWritable message, UpdateParameters parameters)
+        {
+            Func<CharacterObject, bool> isFriend = c => session.FriendManager.IsFriend(c);
+
+            if (!string.IsNullOrEmpty(parameters.Fellowship))
+                session.Fellowships.SingleOrDefault(f => f.Info.Name == parameters.Fellowship)
+                    ?.BroadcastMessage(message, isFriend);
+            else if (parameters.Sequence != 0u)
+                session.Fellowships.ForEach(f => f.BroadcastMessage(message,
+                    c => c.Sequence == parameters.Sequence && session.FriendManager.IsFriend(c)));
+            else
+                session.Fellowships.ForEach(f => f.BroadcastMessage(message, isFriend));
         }
 
         private static IWritable BuildUpdate(IWritable update, uint sequence = 0u, UpdateFlag updateFlags = UpdateFlag.None)
@@ -164,7 +182,7 @@ namespace Pegasus.Map
         public static void UpdateRelayVTank(Session session, IReadable message, UpdateParameters parameters)
         {
             IWritable update = BuildUpdate(message as IWritable, 0u, UpdateFlag.VTank);
-            BroadcastUpdate(session, update, parameters);
+            BroadcastUpdateToFriends(session, update, parameters);
         }
     }
 }

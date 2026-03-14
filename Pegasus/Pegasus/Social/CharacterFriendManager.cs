@@ -133,7 +133,18 @@ namespace Pegasus.Social
         }
 
         /// <summary>
-        /// 
+        /// Returns whether the supplied <see cref="CharacterObject"/> is in the friend list.
+        /// </summary>
+        public bool IsFriend(CharacterObject character)
+        {
+            foreach (var characters in friendList.Values)
+                if (characters.Contains(character))
+                    return true;
+            return false;
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         public void CharacterSignOut(string account, CharacterObject character)
         {
