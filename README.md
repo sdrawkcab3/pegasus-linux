@@ -13,15 +13,18 @@ Make up a new username and password.
 There is no sign-up, but please do not use your account info from your server (or anything else that's real).
 
 Working
-Blue nav lines, fellowship stuff, and many other conveniences.
+- pretty blue nav lines
+- fellowship stuff
+- many commands and conveniences
 
 Added
-Some security updates -
-The client ONLY reacts to commands from yourself and "Friends". This means if you'd like to reliquish command of your toons to someone, you MUST add their VI username to your friends list. (Vital sharing, targeting is still shared)
-Prevent malicious oversize packets from crashing the host.
+- Some security updates
+- The client ONLY reacts to commands from yourself and "Friends". This means if you'd like to reliquish command of your toons to someone, you MUST add their VI username to your friends list. (Vital sharing, targeting is still shared)
+- Prevent malicious oversize packets from crashing the host.
 
 Not working
-Dungeon maps sorta work, but will never be as nice as UtilityBelt dungeon maps. There may be other things that broke when I updated to dotnet9, but at least it runs on aarch64 ;)
+- Dungeon maps sorta work, but will never be as nice as UtilityBelt dungeon maps.
+- There may be other things that broke when I updated to dotnet9, but at least it runs on aarch64 (aka RaspPi-ish SBCs)
 
 ## Prerequisites
 
