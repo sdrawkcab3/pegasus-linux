@@ -5,7 +5,7 @@
 A slapped together emulator for Virindi Integrator 2. This code was an attempt at creating an emulator for Virindi Integrator 2. Various people have asked for the source code since hosting ceased, so here it is.
 
 ## Public Host
-This host will stay up as long as Oracle keeps their little ampere hosts free - thanks Oracle!
+Check the wiki for more instruction. This public host will stay up as long as Oracle keeps their little ampere hosts free - thanks Oracle!
 
 147.224.182.244 white.virindi.net
 
@@ -26,14 +26,13 @@ Not working
 - Dungeon maps sorta work, but will never be as nice as UtilityBelt dungeon maps.
 - There may be other things that broke when I updated to dotnet9, but at least it runs on aarch64 (aka RaspPi-ish SBCs)
 
-## Prerequisites
+## Self Host Prerequisites
 
 - Docker
 - Docker Compose
 - Git
 - PostgreSQL (if running without Docker)
-- A [Cloudflare account](https://cloudflare.com) with a domain (for public access via Cloudflare Tunnel)
-
+  
 ## Project Structure
 
 ```
