@@ -82,37 +82,9 @@ cp .env.example .env
 ```env
 # A strong password for the PostgreSQL database
 POSTGRES_PASSWORD=your_strong_password_here
-
-# Cloudflare Tunnel token (see Public Access section below)
-CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here
 ```
 
 Never commit `.env` to git — it is listed in `.gitignore`.
-
-## Public Access via Cloudflare Tunnel
-
-Cloudflare Tunnel exposes the app publicly without opening any ports on your router or firewall.
-
-### Setup
-
-1. Create a free [Cloudflare account](https://cloudflare.com) and add your domain.
-
-2. Go to **Cloudflare Zero Trust dashboard** → Networks → Tunnels → **Create a tunnel**.
-
-3. Choose **Cloudflared**, give it a name (e.g. `pegasus`), and copy the tunnel token into your `.env` as `CLOUDFLARE_TUNNEL_TOKEN`.
-
-4. Under **Public Hostnames**, add a hostname and configure the service:
-   - **Type:** `HTTP`
-   - **URL:** `pegasus:13124`
-
-   This uses the internal Docker network name — no host port exposure needed.
-
-5. Start the stack:
-```bash
-docker compose up -d
-```
-
-The `cloudflared` container will connect automatically and your app will be available at your configured hostname over HTTPS.
 
 ## Running the Application
 
@@ -120,7 +92,7 @@ The `cloudflared` container will connect automatically and your app will be avai
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/davesienkowski/Pegasus-linux.git
+git clone https://github.com/sdrawkcab3/Pegasus-linux.git
 cd Pegasus
 ```
 
