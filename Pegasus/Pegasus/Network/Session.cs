@@ -39,10 +39,13 @@ namespace Pegasus.Network
             if (Character != null)
                 CharacterUpdateManager.Deregister(Character);
 
-            Channels.ForEach(c => c.RemoveMember(Character));
+            var channels = Channels.ToList();
             Channels.Clear();
-            Fellowships.ForEach(f => f.RemoveMember(Character));
+            channels.ForEach(c => c.RemoveMember(Character));
+
+            var fellowships = Fellowships.ToList();
             Fellowships.Clear();
+            fellowships.ForEach(f => f.RemoveMember(Character));
 
             base.Disconnect();
             NetworkManager.RemoveSession(this);

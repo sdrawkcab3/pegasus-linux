@@ -123,8 +123,13 @@ namespace Pegasus.Network
             }
         }
 
+        private int disconnected;
+
         public virtual void Disconnect()
         {
+            if (Interlocked.Exchange(ref disconnected, 1) != 0)
+                return;
+
             State = SessionState.ShuttingDown;
             outgoingPackets.Clear();
             incomingPackets.Clear();
