@@ -4,14 +4,35 @@
 ### Information
 A slapped together emulator for Virindi Integrator 2. This code was an attempt at creating an emulator for Virindi Integrator 2. Various people have asked for the source code since hosting ceased, so here it is.
 
-## Prerequisites
+## Public Host
+Check the wiki for more instruction. This public host will stay up as long as Oracle keeps their little ampere hosts free - thanks Oracle!
+
+147.224.182.244 white.virindi.net
+
+Make up a new username and password. 
+There is no sign-up, but please do not use your account info from your server (or anything else that's real).
+
+Working
+- pretty blue nav lines
+- fellowship stuff
+- many commands and conveniences
+
+Added
+- Some security updates
+- The client ONLY reacts to commands from yourself and "Friends". This means if you'd like to reliquish command of your toons to someone, you MUST add their VI username to your friends list. (Vital sharing, targeting is still shared)
+- Prevent malicious oversize packets from crashing the host.
+
+Not working
+- Dungeon maps sorta work, but will never be as nice as UtilityBelt dungeon maps.
+- There may be other things that broke when I updated to dotnet9, but at least it runs on aarch64 (aka RaspPi-ish SBCs)
+
+## Self Host Prerequisites
 
 - Docker
 - Docker Compose
 - Git
 - PostgreSQL (if running without Docker)
-- A [Cloudflare account](https://cloudflare.com) with a domain (for public access via Cloudflare Tunnel)
-
+  
 ## Project Structure
 
 ```
@@ -61,37 +82,9 @@ cp .env.example .env
 ```env
 # A strong password for the PostgreSQL database
 POSTGRES_PASSWORD=your_strong_password_here
-
-# Cloudflare Tunnel token (see Public Access section below)
-CLOUDFLARE_TUNNEL_TOKEN=your_tunnel_token_here
 ```
 
 Never commit `.env` to git — it is listed in `.gitignore`.
-
-## Public Access via Cloudflare Tunnel
-
-Cloudflare Tunnel exposes the app publicly without opening any ports on your router or firewall.
-
-### Setup
-
-1. Create a free [Cloudflare account](https://cloudflare.com) and add your domain.
-
-2. Go to **Cloudflare Zero Trust dashboard** → Networks → Tunnels → **Create a tunnel**.
-
-3. Choose **Cloudflared**, give it a name (e.g. `pegasus`), and copy the tunnel token into your `.env` as `CLOUDFLARE_TUNNEL_TOKEN`.
-
-4. Under **Public Hostnames**, add a hostname and configure the service:
-   - **Type:** `HTTP`
-   - **URL:** `pegasus:13124`
-
-   This uses the internal Docker network name — no host port exposure needed.
-
-5. Start the stack:
-```bash
-docker compose up -d
-```
-
-The `cloudflared` container will connect automatically and your app will be available at your configured hostname over HTTPS.
 
 ## Running the Application
 
@@ -99,7 +92,7 @@ The `cloudflared` container will connect automatically and your app will be avai
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/davesienkowski/Pegasus-linux.git
+git clone https://github.com/sdrawkcab3/Pegasus-linux.git
 cd Pegasus
 ```
 
